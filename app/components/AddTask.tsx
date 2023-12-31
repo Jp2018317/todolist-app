@@ -6,7 +6,7 @@ import { useState } from "react";
 //react icons
 import { IoClose } from "react-icons/io5";
 
-export default function Task() {
+export default function AddTask() {
   const [addTask, setAddTask] = useState(false);
 
   async function newTask(){
