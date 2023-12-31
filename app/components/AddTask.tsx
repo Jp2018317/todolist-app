@@ -5,12 +5,15 @@ import { useState } from "react";
 
 //react icons
 import { IoClose } from "react-icons/io5";
+import { addNewTask } from "../actions/tasks";
 
 export default function AddTask() {
   const [addTask, setAddTask] = useState(false);
+  const [taskValue, setTaskValue] = useState({title: "", status: "Incomplete"});
 
   async function newTask() {
     console.log("añadir task");
+    await addNewTask({title: taskValue.title, status: "Incomplete", author: "jmorales317"});
     setAddTask(false);
   }
 
@@ -38,9 +41,19 @@ export default function AddTask() {
             <h2 className="text-xl font-semibold text-gray-600">Add Task</h2>
             <div className="flex flex-col gap-2">
               <span className="text-sm text-gray-500 font-medium">Title</span>
-              <input type="text" className="h-10" />
+              <input 
+                defaultValue={taskValue.title} 
+                onChange={(e) => setTaskValue({ ...taskValue, title: e.target.value})}
+                type="text"
+                className="h-10 p-2"
+              />
               <span className="text-sm text-gray-500 font-medium">Status</span>
-              <input type="text" className="h-10" />
+              <input 
+                defaultValue={taskValue.status}
+                onChange={(e) => setTaskValue({ ...taskValue, status: e.target.value})}
+                type="text"
+                className="h-10 p-2"
+              />
             </div>
             <div className="w-full flex gap-2">
               <button
