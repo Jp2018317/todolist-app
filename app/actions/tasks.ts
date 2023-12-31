@@ -19,9 +19,10 @@ export async function getTasksByStatus(status: "Complete" | "Incomplete", userna
     return db.select().from(tasks).where(sql`${tasks.status} = ${status} and ${tasks.author} = ${username}`);
 }
 
-export async function addNewTask({title, author}: Omit<Task, "id" | "status" | "createdAt" | "updatedAt">){
+export async function addNewTask({title, status, author}: Omit<Task, "id" | "createdAt" | "updatedAt">){
     await db.insert(tasks).values({
         title: title,
+        status: status,
         author: author,
     });
 }
