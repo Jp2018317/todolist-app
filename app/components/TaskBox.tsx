@@ -1,5 +1,8 @@
 "use client";
 
+//react
+import { useState } from "react";
+
 //types
 import { Task } from "@/config/types";
 
@@ -14,12 +17,14 @@ export default function TaskBox({
   createdAt,
   updatedAt,
 }: Omit<Task, "author">) {
+  const [checked, setChecked] = useState(status === "Complete" ? true : false);
   return (
     <div className="w-full p-3 flex items-center justify-between gap-4 bg-white rounded-md">
       <div className="w-full flex items-center gap-3">
         <input
           type="checkbox"
-          checked={status === "Complete" ? true : false}
+          checked={checked}
+          onChange={() => setChecked(!checked)}
           className="w-6 h-6 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
         />
         <div className="flex flex-col justify-center">
