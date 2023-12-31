@@ -1,5 +1,5 @@
 import type { Config } from "drizzle-kit";
-import { DATABASE_AUTH_TOKEN, DATABASE_URL } from "./config";
+import { DATABASE_AUTH_TOKEN, DATABASE_URL } from "./config/config";
 
 export default {
   schema: "./db/schema",
