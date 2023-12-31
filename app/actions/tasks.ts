@@ -1,13 +1,15 @@
 "use server"
 
-//Database
+//db
 import { db } from "@/db"
 import { tasks } from "@/db/schema/tasks";
 
-//Types
-import { Task } from "@/config/types";
+//Drizzle
 import { eq } from "drizzle-orm";
 import { datetime } from "drizzle-orm/mysql-core";
+
+//Types
+import { Task } from "@/config/types";
 
 export async function getTasks() {
     return db.select().from(tasks);
@@ -17,7 +19,7 @@ export async function getTasksByStatus(status: "Complete" | "Incomplete") {
     return db.select().from(tasks).where(eq(tasks.status, status));
 }
 
-export async function setTask({title, author}: Omit<Task, "id" | "status" | "createdAt" | "updatedAt">){
+export async function addTask({title, author}: Omit<Task, "id" | "status" | "createdAt" | "updatedAt">){
     await db.insert(tasks).values({
         title: title,
         author: author,
