@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main className="flex justify-center w-full h-full">
-          <div className="w-full h-full max-w-3xl p-6 space-y-2">
+          <div className="w-full h-full max-w-3xl p-6">
             <h1 className="w-full text-center font-extrabold text-4xl text-gray-500 mb-8">
               TODO LIST
             </h1>
