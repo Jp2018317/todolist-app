@@ -5,35 +5,66 @@ import { useState } from "react";
 
 //react icons
 import { IoClose } from "react-icons/io5";
+import { FaAngleDown } from "react-icons/fa";
+
+//actions
 import { addNewTask } from "../actions/tasks";
+import { ListFilter } from "@/config/config";
+
 
 export default function AddTask() {
-  const [addTask, setAddTask] = useState(false);
+  //
+  const [showAddTask, setShowAddTask] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+
+  const [taskFilter, setTaskFilter] = useState("ALL");
   const [taskValue, setTaskValue] = useState({title: "", status: "Incomplete"});
 
   async function newTask() {
     console.log("añadir task");
     await addNewTask({title: taskValue.title, status: "Incomplete", author: "jmorales317"});
-    setAddTask(false);
+    setShowAddTask(false);
   }
 
   return (
     <>
       <div className="w-full flex justify-between">
         <button
-          onClick={() => setAddTask(true)}
+          onClick={() => setShowAddTask(true)}
           className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
         >
           Add Task
         </button>
-        <button className="bg-gray-300 px-5 py-2 rounded-md font-medium">
-          ALL
-        </button>
+        <div className="relative">
+          <button onClick={() => setOpenFilter(!openFilter)} className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
+            <div>
+              { taskFilter }
+            </div>
+            <FaAngleDown />
+          </button>
+          {
+            openFilter && (
+              <div className="absolute w-full right-0 mt-2 bg-indigo-50 border border-indigo-200 flex flex-col justify-between items-center rounded-md font-medium">
+                {
+                  ListFilter.map((filter) => (
+                    <button
+                      key={filter}
+                      onClick={() => { setTaskFilter(`${filter}`); setOpenFilter(!openFilter) }}
+                      className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
+                    >
+                      {filter}
+                    </button>
+                  ))
+                }
+              </div>
+            )
+          }
+        </div>
       </div>
-      {addTask ? (
+      {showAddTask ? (
         <>
           <div
-            onClick={() => setAddTask(false)}
+            onClick={() => setShowAddTask(false)}
             className="absolute z-30 top-0 left-0 flex justify-center items-center w-full h-[100dvh] bg-black/50"
           />
 
@@ -63,7 +94,7 @@ export default function AddTask() {
                 Add Task
               </button>
               <button
-                onClick={() => setAddTask(false)}
+                onClick={() => setShowAddTask(false)}
                 className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 transition-colors duration-100 text-gray-600 px-5 py-2 rounded-md font-medium"
               >
                 Cancel
@@ -71,7 +102,7 @@ export default function AddTask() {
             </div>
             <div className="absolute -top-16 right-0 h-8 w-full flex justify-end">
               <button
-                onClick={() => setAddTask(false)}
+                onClick={() => setShowAddTask(false)}
                 className="w-8 h-full bg-gray-100 p-0 flex justify-center items-center rounded-md"
               >
                 <IoClose className="w-6 h-6 text-gray-600" />
