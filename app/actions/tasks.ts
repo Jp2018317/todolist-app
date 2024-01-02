@@ -10,6 +10,7 @@ import { datetime } from "drizzle-orm/mysql-core";
 
 //Types
 import { Task } from "@/config/types";
+import { getFormattedDate } from "@/config/config";
 
 export async function getTasks(username: string) {
     return db.select().from(tasks).where(eq(tasks.author, username));
@@ -24,12 +25,13 @@ export async function addNewTask({title, status, author}: Omit<Task, "id" | "cre
         title: title,
         status: status,
         author: author,
+        createdAt: getFormattedDate(Date.now())
     });
 }
 
-export async function updateTask({id, title, status}: Omit<Task, "author" | "createdAt">){
+export async function updateTask({id, title, status}: Omit<Task, "author" | "createdAt" | "updatedAt">){
     await db.update(tasks)
-    .set({ title: title, status: status, updatedAt: datetime.toString() })
+    .set({ title: title, status: status, updatedAt: getFormattedDate(Date.now()) })
     .where(eq(tasks.id, id));
 }
 
