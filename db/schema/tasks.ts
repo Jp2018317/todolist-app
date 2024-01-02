@@ -3,7 +3,7 @@ import { users } from "./user";
 
 export const tasks = sqliteTable('tasks', {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  title: text('title').unique().notNull(),
+  title: text('title').notNull(),
   status: text('status', { enum: ["Complete", "Incomplete"] }).default("Incomplete").notNull(),
   createdAt: text('createdAt').notNull(),
   updatedAt: text('updatedAt'),
