@@ -12,6 +12,7 @@ import { MdModeEdit } from "react-icons/md";
 
 //actions
 import { updateTask } from "../actions/tasks";
+import DeleteTask from "./DeleteTask";
 
 export default function TaskBox({
   id,
@@ -21,6 +22,9 @@ export default function TaskBox({
   updatedAt,
 }: Omit<Task, "author">) {
   const [checked, setChecked] = useState(status === "Complete" ? true : false);
+
+  //Delete Modal
+  const [showDeleteTask, setShowDeleteTask] = useState(false);
 
   async function updateStatus() {
     await updateTask({id: id, title: title, status: status === "Complete" ? "Incomplete" : "Complete"});
@@ -45,6 +49,7 @@ export default function TaskBox({
       </div>
       <div className="flex max-xs:flex-col justify-center items-center gap-3">
         <button
+          onClick={() => setShowDeleteTask(true)}
           type="button"
           className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500"
         >
@@ -57,6 +62,10 @@ export default function TaskBox({
           <MdModeEdit />
         </button>
       </div>
+      { showDeleteTask && (
+          <DeleteTask id={id} showDeleteTask={showDeleteTask} setShowDeleteTask={setShowDeleteTask}/>
+        )
+      }
     </div>
   );
 }
