@@ -24,7 +24,7 @@ export default function SignupForm() {
     if(userExist.length === 0){
       await signup(signupValues.username, signupValues.password);
       localStorage.setItem("user", signupValues.username);
-      router.push("/");
+      router.push("/", { scroll: false });
       return;
     };
     setError(true);

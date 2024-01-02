@@ -27,7 +27,7 @@ export default function LoginForm() {
     }
     setError(false);
     localStorage.setItem("user", loginValues.username);
-    router.push("/");
+    router.push("/", { scroll: false });
   }
 
   return (
