@@ -34,7 +34,7 @@ export default function TaskBox({
     await updateTask({
       id: id,
       title: title,
-      status: status === "Complete" ? "Incomplete" : "Complete",
+      status: checked ? "Incomplete" : "Complete",
     });
   }
 
