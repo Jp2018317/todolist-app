@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className + ` bg-gray-50`}>
         <main className="flex justify-center w-full h-full">
           <div className="w-full h-full max-w-3xl p-6">
             <h1 className="w-full text-center font-extrabold text-4xl text-gray-500 mb-8">
