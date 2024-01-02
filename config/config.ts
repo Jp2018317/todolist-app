@@ -6,7 +6,6 @@ export const statusDropdown: string[] = ["Complete", "Incomplete"];
 
 export function getFormattedDate(timestamp: number){
     const date = new Date(timestamp);
-    console.log({DATE: date})
 
     const hours = date.getHours();
     const minutes = date.getMinutes();
