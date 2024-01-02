@@ -3,6 +3,10 @@
 //react
 import { useEffect, useState } from "react";
 
+//next
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 //react icons
 import { IoClose } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
@@ -14,10 +18,11 @@ import TasksView from "./TasksView";
 
 //types
 import { Task } from "@/config/types";
-import Link from "next/link";
-import { deleteUser, getUsers } from "../actions/users";
+import { getUsers } from "../actions/users";
 
 export default function AddTask() {
+  const router = useRouter();
+
   //Filter
   const [openFilter, setOpenFilter] = useState(false);
   const [filterValue, setFilterValue] = useState("ALL");
@@ -40,7 +45,7 @@ export default function AddTask() {
     await addNewTask({
       title: taskValue.title,
       status: taskValue.status,
-      author: "jmorales317",
+      author: userLogged,
     });
     setTaskValue({ title: "", status: "Incomplete" });
     setShowAddTask(false);
@@ -52,6 +57,11 @@ export default function AddTask() {
     setTasks(tasksFiltered);
     setFilterValue(`${filter}`);
     setOpenFilter(!openFilter);
+  }
+
+  function logOut(){
+    localStorage.removeItem("user");
+    window.location.reload();
   }
 
   useEffect(() => {
@@ -192,7 +202,20 @@ export default function AddTask() {
               </>
             ) : null}
           </section>
-          <TasksView userLogged={userLogged} filter={filterValue} tasks={tasks} setTasks={setTasks} />
+          <TasksView
+            userLogged={userLogged}
+            filter={filterValue}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
+          <div className="flex justify-center items-center">
+            <button
+              onClick={() => logOut()}
+              className="w-full max-w-[10rem] bg-red-500 hover:bg-red-600 active:bg-red-400 text-white py-1.5 px-2 rounded-md mt-2"
+            >
+              LogOut
+            </button>
+          </div>
         </>
       ) : (
         <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center justify-center bg-indigo-50 rounded-lg mt-1.5 p-6">
