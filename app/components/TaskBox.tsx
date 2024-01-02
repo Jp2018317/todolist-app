@@ -34,16 +34,16 @@ export default function TaskBox({
           type="checkbox"
           checked={checked}
           onChange={() => setChecked(!checked)}
-          className="w-6 h-6 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
+          className="sm:w-6 w-4 sm:h-6 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
         />
         <div className="flex flex-col justify-center">
-          <span className={`font-medium ${checked ? 'line-through text-gray-400' : 'text-gray-700'}`}>{title}</span>
-          <span className="text-xs text-gray-500">
+          <span className={`font-medium max-sm:text-sm ${checked ? 'line-through text-gray-400' : 'text-gray-700'}`}>{title}</span>
+          <span className="text-xs max-sm:text-[10px] text-gray-500">
             Created: {createdAt} {updatedAt && `| Updated: ${updatedAt}`}
           </span>
         </div>
       </div>
-      <div className="flex justify-center items-center gap-3">
+      <div className="flex max-xs:flex-col justify-center items-center gap-3">
         <button
           type="button"
           className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500"

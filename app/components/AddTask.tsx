@@ -72,7 +72,7 @@ export default function AddTask() {
             className="fixed z-30 top-0 left-0 flex justify-center items-center w-full h-[100dvh] bg-black/50"
           />
 
-          <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-50 w-full max-w-md bg-indigo-50 rounded-lg p-5 space-y-6">
+          <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md bg-indigo-50 rounded-lg p-5 space-y-6">
             <h2 className="text-xl font-semibold text-gray-600">Add Task</h2>
             <div className="flex flex-col gap-2">
               <span className="text-sm text-gray-500 font-medium">Title</span>
