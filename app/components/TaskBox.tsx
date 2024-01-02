@@ -28,7 +28,7 @@ export default function TaskBox({
           className="w-6 h-6 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
         />
         <div className="flex flex-col justify-center">
-          <span className="font-medium text-gray-700">{title}</span>
+          <span className={`font-medium ${checked ? 'line-through text-gray-400' : 'text-gray-700'}`}>{title}</span>
           <span className="text-xs text-gray-500">
             Created: {createdAt} {updatedAt && `| Updated: ${updatedAt}`}
           </span>
