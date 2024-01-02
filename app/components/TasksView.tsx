@@ -18,6 +18,7 @@ type TasksViewProps = {
 
 export default function TasksView({filter, tasks, setTasks}: TasksViewProps) {
 
+  //Get tasks from the user and store it
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -31,8 +32,8 @@ export default function TasksView({filter, tasks, setTasks}: TasksViewProps) {
   }, []);
 
   return (
-    <div className="w-full max-h-[490px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-2 p-5">
-      {tasks ? (
+    <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-1.5 p-6">
+      {tasks?.length ? (
         tasks.map((task) => (
           <TaskBox
             key={task.id}
@@ -44,6 +45,7 @@ export default function TasksView({filter, tasks, setTasks}: TasksViewProps) {
           />
         ))
       ) : (
+        //Show Message if there are no tasks found
         <div className="bg-zinc-200 px-3 py-1.5 rounded-md text-sm font-medium">
           No Todo Found
         </div>

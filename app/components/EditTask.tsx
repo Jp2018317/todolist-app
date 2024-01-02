@@ -26,6 +26,8 @@ export default function EditTask({
 }: DeleteTaskProps) {
   //Edit Task Modal
   const [statusFilter, setStatusFilter] = useState(false);
+
+  //Edit Task form values
   const [taskValue, setTaskValue] = useState<{
     title: string;
     status: "Complete" | "Incomplete";
@@ -40,11 +42,12 @@ export default function EditTask({
     setShowEditTask(false);
   }
 
+  //Get the task selected from the database
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         const taskById = await getTask(id);
-        setTaskValue({title: taskById[0].title, status: taskById[0].status});
+        setTaskValue({ title: taskById[0].title, status: taskById[0].status });
       } catch (error) {
         setTaskValue({ title: "", status: "Incomplete" });
       }

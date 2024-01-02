@@ -26,14 +26,14 @@ export default function AddTask() {
   //Add Task Modal
   const [showAddTask, setShowAddTask] = useState(false);
   const [statusFilter, setStatusFilter] = useState(false);
+
+  //Add Task form value
   const [taskValue, setTaskValue] = useState<{
     title: string;
     status: "Complete" | "Incomplete";
   }>({ title: "", status: "Incomplete" });
 
   async function newTask() {
-    console.log("añadir task");
-    console.log({ TASKS_VALUES: taskValue });
     await addNewTask({
       title: taskValue.title,
       status: taskValue.status,
@@ -43,6 +43,7 @@ export default function AddTask() {
     setShowAddTask(false);
   }
 
+  //Get Tasks depending on the status filter
   async function getFilteredTasks(filter: string) {
     const tasksFiltered = await getTasks("jmorales317", filter);
     setTasks(tasksFiltered);
@@ -172,7 +173,7 @@ export default function AddTask() {
           </>
         ) : null}
       </section>
-      <TasksView filter={filterValue} tasks={tasks} setTasks={setTasks}/>
+      <TasksView filter={filterValue} tasks={tasks} setTasks={setTasks} />
     </>
   );
 }
