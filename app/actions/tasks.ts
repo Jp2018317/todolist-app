@@ -18,6 +18,10 @@ export async function getTasks(username: string, filter: string) {
     return db.select().from(tasks).where(sql`${tasks.status} = ${filter} and ${tasks.author} = ${username}`);
 }
 
+export async function getTask(id: number) {
+    return db.select().from(tasks).where(eq(tasks.id, id));
+}
+
 export async function addNewTask({title, status, author}: Omit<Task, "id" | "createdAt" | "updatedAt">){
     await db.insert(tasks).values({
         title: title,
