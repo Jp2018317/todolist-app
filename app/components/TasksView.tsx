@@ -1,7 +1,7 @@
 "use client";
 
 //react
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 //types
 import { Task } from "@/config/types";
@@ -10,13 +10,18 @@ import { getTasks } from "../actions/tasks";
 //icons
 import TaskBox from "./TaskBox";
 
-export default function TasksView() {
-  const [tasks, setTasks] = useState<Task[] | null>(null);
+type TasksViewProps = {
+  filter: string;
+  tasks: Task[] | null;
+  setTasks: Dispatch<SetStateAction<Task[] | null>>
+}
+
+export default function TasksView({filter, tasks, setTasks}: TasksViewProps) {
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const allTasks = await getTasks("jmorales317");
+        const allTasks = await getTasks("jmorales317", filter);
         setTasks(allTasks);
       } catch (error) {
         setTasks([]);

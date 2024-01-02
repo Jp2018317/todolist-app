@@ -11,7 +11,7 @@ import { eq, sql } from "drizzle-orm";
 import { Task } from "@/config/types";
 import { getFormattedDate } from "@/config/config";
 
-export async function getTasks(username: string, filter: "Complete" | "Incomplete" | "ALL") {
+export async function getTasks(username: string, filter: string) {
     if(filter === "ALL"){
         return db.select().from(tasks).where(eq(tasks.author, username));
     }
