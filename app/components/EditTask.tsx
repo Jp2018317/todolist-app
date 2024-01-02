@@ -12,8 +12,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { getTask, updateTask } from "../actions/tasks";
 import { statusDropdown } from "@/config/config";
 
-//types
-
 type DeleteTaskProps = {
   id: number;
   showEditTask: boolean;
@@ -72,7 +70,7 @@ export default function EditTask({
           <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md bg-indigo-50 rounded-lg p-5 space-y-6">
             <h2 className="text-xl font-semibold text-gray-600">Edit Task</h2>
             {isLoading ? (
-              <div className="w-full flex justify-center py-10">
+              <div className="w-full flex justify-center py-14">
               <AiOutlineLoading3Quarters className="animate-spin text-indigo-500 w-8 h-8" />
             </div>
             ) : (

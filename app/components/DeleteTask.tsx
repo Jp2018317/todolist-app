@@ -56,7 +56,7 @@ export default function DeleteTask({
                 Cancel
               </button>
             </div>
-            <div className="absolute -top-16 right-0 h-8 w-full flex justify-end">
+            <div className="absolute -top-14 right-0 h-8 w-full flex justify-end">
               <button
                 onClick={() => setShowDeleteTask(false)}
                 className="w-8 h-full bg-gray-100 p-0 flex justify-center items-center rounded-md"

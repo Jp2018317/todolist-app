@@ -33,7 +33,7 @@ export default function TasksView({userLogged, filter, tasks, setTasks}: TasksVi
   }, []);
 
   return (
-    <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-1.5 p-6">
+    <div className="w-full max-h-[504px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-1.5 p-6">
       {tasks?.length ? (
         tasks.map((task) => (
           <TaskBox
