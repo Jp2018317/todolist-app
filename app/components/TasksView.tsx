@@ -11,18 +11,19 @@ import { getTasks } from "../actions/tasks";
 import TaskBox from "./TaskBox";
 
 type TasksViewProps = {
+  userLogged: string;
   filter: string;
   tasks: Task[] | null;
   setTasks: Dispatch<SetStateAction<Task[] | null>>
 }
 
-export default function TasksView({filter, tasks, setTasks}: TasksViewProps) {
+export default function TasksView({userLogged, filter, tasks, setTasks}: TasksViewProps) {
 
   //Get tasks from the user and store it
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const allTasks = await getTasks("jmorales317", filter);
+        const allTasks = await getTasks(userLogged, filter);
         setTasks(allTasks);
       } catch (error) {
         setTasks([]);

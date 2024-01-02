@@ -39,7 +39,7 @@ export default function AddTask() {
     await addNewTask({
       title: taskValue.title,
       status: taskValue.status,
-      author: "jmorales317",
+      author: userLogged,
     });
     setTaskValue({ title: "", status: "Incomplete" });
     setShowAddTask(false);
@@ -47,7 +47,7 @@ export default function AddTask() {
 
   //Get Tasks depending on the status filter
   async function getFilteredTasks(filter: string) {
-    const tasksFiltered = await getTasks("jmorales317", filter);
+    const tasksFiltered = await getTasks(userLogged, filter);
     setTasks(tasksFiltered);
     setFilterValue(`${filter}`);
     setOpenFilter(!openFilter);
@@ -191,7 +191,7 @@ export default function AddTask() {
               </>
             ) : null}
           </section>
-          <TasksView filter={filterValue} tasks={tasks} setTasks={setTasks} />
+          <TasksView userLogged={userLogged} filter={filterValue} tasks={tasks} setTasks={setTasks} />
         </>
       ) : (
         <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center justify-center bg-indigo-50 rounded-lg mt-1.5 p-6">
