@@ -31,7 +31,11 @@ export default function TaskBox({
   const [showEditTask, setShowEditTask] = useState(false);
 
   async function updateStatus() {
-    await updateTask({id: id, title: title, status: status === "Complete" ? "Incomplete" : "Complete"});
+    await updateTask({
+      id: id,
+      title: title,
+      status: checked ? "Incomplete" : "Complete",
+    });
   }
 
   return (
@@ -45,7 +49,13 @@ export default function TaskBox({
           className="sm:w-6 w-4 sm:h-6 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
         />
         <div className="flex flex-col justify-center">
-          <span className={`font-medium max-sm:text-sm ${checked ? 'line-through text-gray-400' : 'text-gray-700'}`}>{title}</span>
+          <span
+            className={`font-medium max-sm:text-sm ${
+              checked ? "line-through text-gray-400" : "text-gray-700"
+            }`}
+          >
+            {title}
+          </span>
           <span className="text-xs max-sm:text-[10px] text-gray-500">
             Created: {createdAt} {updatedAt && `| Updated: ${updatedAt}`}
           </span>
@@ -67,14 +77,22 @@ export default function TaskBox({
           <MdModeEdit />
         </button>
       </div>
-      { showDeleteTask && (
-          <DeleteTask id={id} showDeleteTask={showDeleteTask} setShowDeleteTask={setShowDeleteTask}/>
-        )
-      }
-      { showEditTask && (
-          <EditTask id={id} showEditTask={showEditTask} setShowEditTask={setShowEditTask}/>
-        )
-      }
+      { //Show Delete Modal on Delete button clicked
+        showDeleteTask && (
+        <DeleteTask
+          id={id}
+          showDeleteTask={showDeleteTask}
+          setShowDeleteTask={setShowDeleteTask}
+        />
+      )}
+      { //Show Update Modal on Update button clicked
+        showEditTask && (
+        <EditTask
+          id={id}
+          showEditTask={showEditTask}
+          setShowEditTask={setShowEditTask}
+        />
+      )}
     </div>
   );
 }

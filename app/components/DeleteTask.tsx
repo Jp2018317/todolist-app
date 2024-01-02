@@ -10,12 +10,16 @@ import { IoClose } from "react-icons/io5";
 import { deleteTask } from "../actions/tasks";
 
 type DeleteTaskProps = {
-  id: number
+  id: number;
   showDeleteTask: boolean;
-  setShowDeleteTask: Dispatch<SetStateAction<boolean>>
-}
+  setShowDeleteTask: Dispatch<SetStateAction<boolean>>;
+};
 
-export default function DeleteTask({id, showDeleteTask, setShowDeleteTask}: DeleteTaskProps) {
+export default function DeleteTask({
+  id,
+  showDeleteTask,
+  setShowDeleteTask,
+}: DeleteTaskProps) {
 
   async function deleteSelectedTask() {
     await deleteTask(id);
@@ -23,8 +27,9 @@ export default function DeleteTask({id, showDeleteTask, setShowDeleteTask}: Dele
   }
 
   return (
-      <>
-        {showDeleteTask ? (
+    <>
+      { //Show delete modal when delete button clicked
+        showDeleteTask ? (
         <>
           <div
             onClick={() => setShowDeleteTask(false)}
@@ -34,7 +39,8 @@ export default function DeleteTask({id, showDeleteTask, setShowDeleteTask}: Dele
           <div className="fixed top-1/3 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm bg-indigo-50 rounded-lg p-5 space-y-3">
             <h2 className="text-xl font-semibold text-gray-600">Delete Task</h2>
             <div className="flex flex-col gap-2 text-sm">
-              Are you sure you want to delete the task? This action cant be reversed
+              Are you sure you want to delete the task? This action cant be
+              reversed
             </div>
             <div className="w-full flex gap-2">
               <button
@@ -61,6 +67,6 @@ export default function DeleteTask({id, showDeleteTask, setShowDeleteTask}: Dele
           </div>
         </>
       ) : null}
-      </>
+    </>
   );
 }
