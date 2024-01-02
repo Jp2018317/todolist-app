@@ -6,18 +6,16 @@ import { tasks } from "@/db/schema/tasks";
 
 //Drizzle
 import { eq, sql } from "drizzle-orm";
-import { datetime } from "drizzle-orm/mysql-core";
 
 //Types
 import { Task } from "@/config/types";
 import { getFormattedDate } from "@/config/config";
 
-export async function getTasks(username: string) {
-    return db.select().from(tasks).where(eq(tasks.author, username));
-}
-
-export async function getTasksByStatus(status: "Complete" | "Incomplete", username: string) {
-    return db.select().from(tasks).where(sql`${tasks.status} = ${status} and ${tasks.author} = ${username}`);
+export async function getTasks(username: string, filter: "Complete" | "Incomplete" | "ALL") {
+    if(filter === "ALL"){
+        return db.select().from(tasks).where(eq(tasks.author, username));
+    }
+    return db.select().from(tasks).where(sql`${tasks.status} = ${filter} and ${tasks.author} = ${username}`);
 }
 
 export async function addNewTask({title, status, author}: Omit<Task, "id" | "createdAt" | "updatedAt">){
