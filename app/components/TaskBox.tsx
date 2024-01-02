@@ -10,6 +10,9 @@ import { Task } from "@/config/types";
 import { FaTrash } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 
+//actions
+import { updateTask } from "../actions/tasks";
+
 export default function TaskBox({
   id,
   title,
@@ -18,10 +21,16 @@ export default function TaskBox({
   updatedAt,
 }: Omit<Task, "author">) {
   const [checked, setChecked] = useState(status === "Complete" ? true : false);
+
+  async function updateStatus() {
+    await updateTask({id: id, title: title, status: status === "Complete" ? "Incomplete" : "Complete"});
+  }
+
   return (
     <div className="w-full p-3 flex items-center justify-between gap-4 bg-white rounded-md">
       <div className="w-full flex items-center gap-3">
         <input
+          onChangeCapture={() => updateStatus()}
           type="checkbox"
           checked={checked}
           onChange={() => setChecked(!checked)}
