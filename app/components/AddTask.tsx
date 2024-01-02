@@ -15,6 +15,7 @@ import TasksView from "./TasksView";
 //types
 import { Task } from "@/config/types";
 import Link from "next/link";
+import { deleteUser, getUsers } from "../actions/users";
 
 export default function AddTask() {
   //Filter
@@ -39,7 +40,7 @@ export default function AddTask() {
     await addNewTask({
       title: taskValue.title,
       status: taskValue.status,
-      author: userLogged,
+      author: "jmorales317",
     });
     setTaskValue({ title: "", status: "Incomplete" });
     setShowAddTask(false);
