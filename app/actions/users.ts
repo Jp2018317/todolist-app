@@ -10,6 +10,9 @@ import { eq, sql } from "drizzle-orm";
 //Types
 import { User } from "@/config/types";
 
+//Config
+import { getFormattedDate } from "@/config/config";
+
 export async function getUsers() {
     return db.select().from(users);
 }
@@ -32,6 +35,7 @@ export async function signup(username: string, password: string) {
     await db.insert(users).values({
         username: username,
         password: password,
+        createdAt: getFormattedDate(Date.now())
     });
 }
 
