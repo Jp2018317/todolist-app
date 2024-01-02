@@ -26,7 +26,7 @@ export default function TasksView() {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col space-y-4 justify-center items-center bg-indigo-50 rounded-lg min-h-20 mt-2 p-5">
+    <div className="w-full max-h-[490px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-2 p-5">
       {tasks ? (
         tasks.map((task) => (
           <TaskBox
