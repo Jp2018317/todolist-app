@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 //react icons
 import { IoClose } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 //actions
 import { getTask, updateTask } from "../actions/tasks";
@@ -26,6 +27,9 @@ export default function EditTask({
 }: DeleteTaskProps) {
   //Edit Task Modal
   const [statusFilter, setStatusFilter] = useState(false);
+
+  //Loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   //Edit Task form values
   const [taskValue, setTaskValue] = useState<{
@@ -48,6 +52,7 @@ export default function EditTask({
       try {
         const taskById = await getTask(id);
         setTaskValue({ title: taskById[0].title, status: taskById[0].status });
+        setIsLoading(false);
       } catch (error) {
         setTaskValue({ title: "", status: "Incomplete" });
       }
@@ -66,52 +71,62 @@ export default function EditTask({
 
           <div className="fixed top-1/4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md bg-indigo-50 rounded-lg p-5 space-y-6">
             <h2 className="text-xl font-semibold text-gray-600">Edit Task</h2>
-            <div className="flex flex-col gap-2">
-              <span className="text-sm text-gray-500 font-medium">Title</span>
-              <input
-                defaultValue={taskValue.title}
-                onChange={(e) =>
-                  setTaskValue({ ...taskValue, title: e.target.value })
-                }
-                type="text"
-                className="h-10 p-2"
-              />
-              {taskValue.title.length < 3 && (
-                <span className="text-xs text-red-500 font-medium">
-                  Title must have more than 3 characters
-                </span>
-              )}
-              <span className="text-sm text-gray-500 font-medium">Status</span>
-              <div className="relative">
-                <button
-                  onClick={() => setStatusFilter(!statusFilter)}
-                  className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium"
-                >
-                  <div>{taskValue.status}</div>
-                  <FaAngleDown />
-                </button>
-                {statusFilter && (
-                  <div className="absolute w-full right-0 bg-indigo-50 border border-indigo-200 flex flex-col justify-between items-center rounded-sm font-medium">
-                    {statusDropdown.map((status) => (
-                      <button
-                        key={status}
-                        onClick={() => {
-                          setTaskValue({
-                            ...taskValue,
-                            status:
-                              status === "Complete" ? "Complete" : "Incomplete",
-                          });
-                          setStatusFilter(!statusFilter);
-                        }}
-                        className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
-                      >
-                        {status}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+            {isLoading ? (
+              <div className="w-full flex justify-center py-10">
+              <AiOutlineLoading3Quarters className="animate-spin text-indigo-500 w-8 h-8" />
             </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <span className="text-sm text-gray-500 font-medium">Title</span>
+                <input
+                  defaultValue={taskValue.title}
+                  onChange={(e) =>
+                    setTaskValue({ ...taskValue, title: e.target.value })
+                  }
+                  type="text"
+                  className="h-10 p-2"
+                />
+                {taskValue.title.length < 3 && (
+                  <span className="text-xs text-red-500 font-medium">
+                    Title must have more than 3 characters
+                  </span>
+                )}
+                <span className="text-sm text-gray-500 font-medium">
+                  Status
+                </span>
+                <div className="relative">
+                  <button
+                    onClick={() => setStatusFilter(!statusFilter)}
+                    className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium"
+                  >
+                    <div>{taskValue.status}</div>
+                    <FaAngleDown />
+                  </button>
+                  {statusFilter && (
+                    <div className="absolute w-full right-0 bg-indigo-50 border border-indigo-200 flex flex-col justify-between items-center rounded-sm font-medium">
+                      {statusDropdown.map((status) => (
+                        <button
+                          key={status}
+                          onClick={() => {
+                            setTaskValue({
+                              ...taskValue,
+                              status:
+                                status === "Complete"
+                                  ? "Complete"
+                                  : "Incomplete",
+                            });
+                            setStatusFilter(!statusFilter);
+                          }}
+                          className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
+                        >
+                          {status}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="w-full flex gap-2">
               <button
                 onClick={() => editTask()}
