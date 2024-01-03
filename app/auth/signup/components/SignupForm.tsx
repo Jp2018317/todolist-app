@@ -1,11 +1,14 @@
 "use client";
 
+//react
+import { useState } from "react";
+
 //actions
 import { getUser, signup } from "@/app/actions/users";
 import { useRouter } from "next/navigation";
 
-//react
-import { useState } from "react";
+//icons
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function SignupForm() {
   //Login Values
@@ -14,19 +17,22 @@ export default function SignupForm() {
     password: string;
   }>({ username: "", password: "" });
 
-  //Login handle error
+  //Login handle error & loading state
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const router = useRouter();
 
-  async function userSignup(){
+  async function userSignup() {
+    setIsLoading(true);
     const userExist = await getUser(signupValues.username);
-    if(userExist.length === 0){
+    if (userExist.length === 0) {
       await signup(signupValues.username, signupValues.password);
       localStorage.setItem("user", signupValues.username);
       router.push("/", { scroll: false });
       return;
-    };
+    }
+    setIsLoading(false);
     setError(true);
   }
 
@@ -62,13 +68,20 @@ export default function SignupForm() {
       </div>
       <div className="w-full flex flex-col gap-2 mt-4 mb-2">
         <button
-          onClick={(e) => {e.preventDefault(); userSignup()}}
+          onClick={(e) => {
+            e.preventDefault();
+            userSignup();
+          }}
           disabled={
             signupValues.username.length < 2 || signupValues.password.length < 8
           }
-          className="w-full bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
+          className="w-full flex justify-center bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
         >
-          Signup
+          {isLoading ? (
+            <AiOutlineLoading3Quarters className="animate-spin w-6 h-6" />
+          ) : (
+            "Signup"
+          )}
         </button>
         {error && (
           <span className="text-xs text-red-500 font-medium text-center">

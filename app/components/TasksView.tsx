@@ -1,39 +1,19 @@
 "use client";
 
-//react
-import { Dispatch, SetStateAction, useEffect } from "react";
-
 //types
 import { Task } from "@/config/types";
-import { getTasks } from "../actions/tasks";
 
 //icons
 import TaskBox from "./TaskBox";
 
 type TasksViewProps = {
-  userLogged: string;
-  filter: string;
   tasks: Task[] | null;
-  setTasks: Dispatch<SetStateAction<Task[] | null>>
 }
 
-export default function TasksView({userLogged, filter, tasks, setTasks}: TasksViewProps) {
-
-  //Get tasks from the user and store it
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const allTasks = await getTasks(userLogged, filter);
-        setTasks(allTasks);
-      } catch (error) {
-        setTasks([]);
-      }
-    };
-    fetchTasks();
-  }, []);
+export default function TasksView({tasks}: TasksViewProps) {
 
   return (
-    <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-1.5 p-6">
+    <div className="w-full max-h-[504px] overflow-y-auto flex flex-col space-y-4 items-center bg-indigo-50 rounded-lg mt-1.5 p-6">
       {tasks?.length ? (
         tasks.map((task) => (
           <TaskBox

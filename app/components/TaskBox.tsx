@@ -11,11 +11,31 @@ import { FaTrash } from "react-icons/fa6";
 import { MdModeEdit } from "react-icons/md";
 
 //actions
-import { updateTask } from "../actions/tasks";
+import { deleteTask, updateTask } from "../actions/tasks";
 
 //modals
-import DeleteTask from "./DeleteTask";
 import EditTask from "./EditTask";
+
+//shadcn
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 export default function TaskBox({
   id,
@@ -27,8 +47,14 @@ export default function TaskBox({
   const [checked, setChecked] = useState(status === "Complete" ? true : false);
 
   //Delete & Update Modal
-  const [showDeleteTask, setShowDeleteTask] = useState(false);
-  const [showEditTask, setShowEditTask] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+
+  async function deleteSelectedTask() {
+    await deleteTask(id);
+    router.refresh();
+  }
 
   async function updateStatus() {
     await updateTask({
@@ -62,37 +88,43 @@ export default function TaskBox({
         </div>
       </div>
       <div className="flex max-xs:flex-col justify-center items-center gap-3">
-        <button
-          onClick={() => setShowDeleteTask(true)}
-          type="button"
-          className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500"
-        >
-          <FaTrash />
-        </button>
-        <button
-          onClick={() => setShowEditTask(true)}
-          type="button"
-          className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-indigo-600"
-        >
-          <MdModeEdit />
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500">
+            <FaTrash />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Task</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the
+                task
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => deleteSelectedTask()}
+                className="bg-red-500 hover:bg-red-600 active:bg-red-500"
+              >
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500">
+            <MdModeEdit />
+          </DialogTrigger>
+          <DialogContent className="bg-indigo-50">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold text-gray-600">
+                Edit Task
+              </DialogTitle>
+            </DialogHeader>
+            <EditTask id={id} setOpen={setOpen} />
+          </DialogContent>
+        </Dialog>
       </div>
-      { //Show Delete Modal on Delete button clicked
-        showDeleteTask && (
-        <DeleteTask
-          id={id}
-          showDeleteTask={showDeleteTask}
-          setShowDeleteTask={setShowDeleteTask}
-        />
-      )}
-      { //Show Update Modal on Update button clicked
-        showEditTask && (
-        <EditTask
-          id={id}
-          showEditTask={showEditTask}
-          setShowEditTask={setShowEditTask}
-        />
-      )}
     </div>
   );
 }
