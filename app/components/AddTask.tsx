@@ -3,9 +3,6 @@
 //react
 import { useEffect, useState } from "react";
 
-//next
-import Link from "next/link";
-
 //react icons
 import { FaAngleDown } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -34,13 +31,13 @@ import {
 } from "@/components/ui/dialog";
 
 import TasksView from "./TasksView";
+import AuthView from "./AuthView";
 
 export default function AddTask() {
   // Loading state
   const [isLoading, setIsLoading] = useState(true);
 
   //Filter
-  const [openFilter, setOpenFilter] = useState(false);
   const [filterValue, setFilterValue] = useState("ALL");
 
   //Tasks values
@@ -64,6 +61,7 @@ export default function AddTask() {
     });
     setTaskValue({ title: "", status: "Incomplete" });
     setOpen(false);
+    fetchTasks();
   }
 
   //Get Tasks depending on the status filter
@@ -71,7 +69,6 @@ export default function AddTask() {
     const tasksFiltered = await getTasks(userLogged, filter);
     setTasks(tasksFiltered);
     setFilterValue(`${filter}`);
-    setOpenFilter(!openFilter);
   }
 
   function logOut() {
@@ -93,22 +90,23 @@ export default function AddTask() {
   //Get tasks from the user and store it
   useEffect(() => {
     if (!userLogged) return;
-    const fetchTasks = async () => {
-      try {
-        const allTasks = await getTasks(userLogged, filterValue);
-        console.log({ TASKS: allTasks });
-        setTasks(allTasks);
-      } catch (error) {
-        setTasks([]);
-      }
-    };
     fetchTasks();
-  }, [userLogged]);
+  }, [userLogged, filterValue]);
+
+  
+  const fetchTasks = async () => {
+    try {
+      const allTasks = await getTasks(userLogged, filterValue);
+      console.log({ TASKS: allTasks });
+      setTasks(allTasks);
+    } catch (error) {
+      setTasks([]);
+    }
+  };
 
   return (
     <>
-      <section>
-        <div className="w-full flex justify-between">
+        <section className="w-full flex justify-between">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium">
               Add Task
@@ -203,8 +201,7 @@ export default function AddTask() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
-      </section>
+        </section>
       {isLoading ? (
         <div className="w-full flex justify-center py-10 bg-indigo-50 rounded-md mt-1.5">
           <AiOutlineLoading3Quarters className="animate-spin text-indigo-500 w-8 h-8" />
@@ -214,26 +211,7 @@ export default function AddTask() {
           {userLogged !== "" ? (
             <TasksView tasks={tasks} />
           ) : (
-            <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center justify-center bg-indigo-50 rounded-lg mt-1.5 p-6">
-              <h2 className="w-full text-center font-semibold text-lg text-gray-600 my-2">
-                {" "}
-                Login or signup to have your own ToDo list!{" "}
-              </h2>
-              <div className="flex gap-x-4">
-                <Link
-                  href="/auth/login"
-                  className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  className="border border-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 hover:text-white px-5 py-2 rounded-md font-medium"
-                >
-                  Singup
-                </Link>
-              </div>
-            </div>
+            <AuthView />
           )}
         </>
       )}
