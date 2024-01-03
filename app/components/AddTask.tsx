@@ -189,15 +189,14 @@ export default function AddTask() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {listFilter.map((filter) => (
-                <>
+                <div key={filter}>
                   <DropdownMenuItem
-                    key={filter}
                     onClick={() => getFilteredTasks(filter)}
                   >
                     {filter}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                </>
+                </div>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
