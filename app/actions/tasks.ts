@@ -13,9 +13,7 @@ import { getFormattedDate } from "@/config/config";
 import { revalidatePath } from "next/cache";
 
 export async function getTasks(username: string, filter: string) {
-    if(filter === "ALL"){
-        return db.select().from(tasks).where(eq(tasks.author, username));
-    }
+    if(filter === "ALL") return db.select().from(tasks).where(eq(tasks.author, username));
     return db.select().from(tasks).where(sql`${tasks.status} = ${filter} and ${tasks.author} = ${username}`);
 }
 
