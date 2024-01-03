@@ -48,6 +48,9 @@ export default function TaskBox({
 
   //Delete & Update Modal
   const [open, setOpen] = useState(false);
+  
+  //Task title
+  const [taskTitle, setTaskTitle] = useState(title);
 
   const router = useRouter();
 
@@ -80,7 +83,7 @@ export default function TaskBox({
               checked ? "line-through text-gray-400" : "text-gray-700"
             }`}
           >
-            {title}
+            {taskTitle}
           </span>
           <span className="text-xs max-sm:text-[10px] text-gray-500">
             Created: {createdAt} {updatedAt && `| Updated: ${updatedAt}`}
@@ -121,7 +124,7 @@ export default function TaskBox({
                 Edit Task
               </DialogTitle>
             </DialogHeader>
-            <EditTask id={id} setOpen={setOpen} />
+            <EditTask id={id} setOpen={setOpen} checked={checked} setChecked={setChecked} taskTitle={taskTitle} setTaskTitle={setTaskTitle}/>
           </DialogContent>
         </Dialog>
       </div>
