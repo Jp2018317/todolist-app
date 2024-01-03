@@ -35,6 +35,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 export default function TaskBox({
   id,
@@ -48,8 +49,11 @@ export default function TaskBox({
   //Delete & Update Modal
   const [open, setOpen] = useState(false);
 
+  const router = useRouter();
+
   async function deleteSelectedTask() {
     await deleteTask(id);
+    router.refresh();
   }
 
   async function updateStatus() {

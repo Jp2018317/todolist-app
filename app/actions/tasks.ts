@@ -10,6 +10,7 @@ import { eq, sql } from "drizzle-orm";
 //Types
 import { Task } from "@/config/types";
 import { getFormattedDate } from "@/config/config";
+import { revalidatePath } from "next/cache";
 
 export async function getTasks(username: string, filter: string) {
     if(filter === "ALL"){
@@ -39,4 +40,5 @@ export async function updateTask({id, title, status}: Omit<Task, "author" | "cre
 
 export async function deleteTask(id: number){
     await db.delete(tasks).where(eq(tasks.id, id));
+    revalidatePath("/")
 }

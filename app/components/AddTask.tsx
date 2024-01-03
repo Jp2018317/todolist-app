@@ -90,6 +90,21 @@ export default function AddTask() {
     getUsernameFromLocalStorage();
   }, []);
 
+  //Get tasks from the user and store it
+  useEffect(() => {
+    if (!userLogged) return;
+    const fetchTasks = async () => {
+      try {
+        const allTasks = await getTasks(userLogged, filterValue);
+        console.log({ TASKS: allTasks });
+        setTasks(allTasks);
+      } catch (error) {
+        setTasks([]);
+      }
+    };
+    fetchTasks();
+  }, [userLogged]);
+
   return (
     <>
       <section>
@@ -100,73 +115,73 @@ export default function AddTask() {
             </DialogTrigger>
             <DialogContent className="bg-indigo-50">
               <DialogHeader>
-                <DialogTitle className="text-xl font-semibold text-gray-600">Add Task</DialogTitle>
+                <DialogTitle className="text-xl font-semibold text-gray-600">
+                  Add Task
+                </DialogTitle>
               </DialogHeader>
-              
+
               <div className="flex flex-col gap-2">
-                    <span className="text-sm text-gray-500 font-medium">
-                      Title
-                    </span>
-                    <input
-                      defaultValue={taskValue.title}
-                      onChange={(e) =>
-                        setTaskValue({
-                          ...taskValue,
-                          title: e.target.value,
-                        })
-                      }
-                      type="text"
-                      className="h-10 p-2"
-                    />
-                    {taskValue.title.length < 3 && (
-                      <span className="text-xs text-red-500 font-medium">
-                        Title must have more than 3 characters
-                      </span>
-                    )}
-                    <span className="text-sm text-gray-500 font-medium">
-                      Status
-                    </span>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
-                        <div>{taskValue.status}</div>
-                        <FaAngleDown />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        {statusDropdown.map((status) => (
-                          <DropdownMenuItem
-                            key={status}
-                            onClick={() => {
-                              setTaskValue({
-                                ...taskValue,
-                                status:
-                                  status === "Complete"
-                                    ? "Complete"
-                                    : "Incomplete",
-                              });
-                            }}
-                            className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
-                          >
-                            {status}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                  <div className="w-full flex gap-2">
-                    <button
-                      onClick={() => newTask()}
-                      disabled={taskValue.title.length < 3}
-                      className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
-                    >
-                      Add Task
-                    </button>
-                    <button
-                      onClick={() => {setOpen(false);}}
-                      className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 transition-colors duration-100 text-gray-600 px-5 py-2 rounded-md font-medium"
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                <span className="text-sm text-gray-500 font-medium">Title</span>
+                <input
+                  defaultValue={taskValue.title}
+                  onChange={(e) =>
+                    setTaskValue({
+                      ...taskValue,
+                      title: e.target.value,
+                    })
+                  }
+                  type="text"
+                  className="h-10 p-2"
+                />
+                {taskValue.title.length < 3 && (
+                  <span className="text-xs text-red-500 font-medium">
+                    Title must have more than 3 characters
+                  </span>
+                )}
+                <span className="text-sm text-gray-500 font-medium">
+                  Status
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
+                    <div>{taskValue.status}</div>
+                    <FaAngleDown />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {statusDropdown.map((status) => (
+                      <DropdownMenuItem
+                        key={status}
+                        onClick={() => {
+                          setTaskValue({
+                            ...taskValue,
+                            status:
+                              status === "Complete" ? "Complete" : "Incomplete",
+                          });
+                        }}
+                        className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
+                      >
+                        {status}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="w-full flex gap-2">
+                <button
+                  onClick={() => newTask()}
+                  disabled={taskValue.title.length < 3}
+                  className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 disabled:bg-indigo-300 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium"
+                >
+                  Add Task
+                </button>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                  className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 transition-colors duration-100 text-gray-600 px-5 py-2 rounded-md font-medium"
+                >
+                  Cancel
+                </button>
+              </div>
             </DialogContent>
           </Dialog>
           <DropdownMenu>
@@ -197,12 +212,7 @@ export default function AddTask() {
       ) : (
         <>
           {userLogged !== "" ? (
-            <TasksView
-              userLogged={userLogged}
-              filter={filterValue}
-              tasks={tasks}
-              setTasks={setTasks}
-            />
+            <TasksView tasks={tasks} />
           ) : (
             <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center justify-center bg-indigo-50 rounded-lg mt-1.5 p-6">
               <h2 className="w-full text-center font-semibold text-lg text-gray-600 my-2">
