@@ -59,9 +59,7 @@ export default function EditTask({
         <span className="text-sm text-gray-500 font-medium">Title</span>
         <input
           defaultValue={taskValue.title}
-          onChange={(e) =>
-            setTaskValue({ ...taskValue, title: e.target.value })
-          }
+          onChange={(e) => setTaskValue({ ...taskValue, title: e.target.value })}
           type="text"
           className="h-10 px-3 py-2 rounded-md"
         />
@@ -80,12 +78,7 @@ export default function EditTask({
             {statusDropdown.map((status) => (
               <DropdownMenuItem
                 key={status}
-                onClick={() => {
-                  setTaskValue({
-                    ...taskValue,
-                    status: status === "Complete" ? "Complete" : "Incomplete",
-                  });
-                }}
+                onClick={() => setTaskValue({...taskValue,status: status === "Complete" ? "Complete" : "Incomplete"})}
                 className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
               >
                 {status}
@@ -103,9 +96,7 @@ export default function EditTask({
           Edit Task
         </button>
         <button
-          onClick={() => {
-            setOpen(false);
-          }}
+          onClick={() => setOpen(false)}
           className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 transition-colors duration-100 text-gray-600 px-5 py-2 rounded-md font-medium"
         >
           Cancel

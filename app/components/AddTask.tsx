@@ -108,7 +108,7 @@ export default function AddTask() {
     <>
         <section className="w-full flex justify-between">
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 transition-colors duration-100 text-white px-5 py-2 rounded-md font-medium">
+            <DialogTrigger className="bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-400 transition-colors duration-100 text-white px-3 xs:px-5 py-1 xs:py-2 max-xs:text-sm rounded-md font-medium">
               Add Task
             </DialogTrigger>
             <DialogContent className="bg-indigo-50">
@@ -183,7 +183,7 @@ export default function AddTask() {
             </DialogContent>
           </Dialog>
           <DropdownMenu>
-            <DropdownMenuTrigger className="bg-gray-200 flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
+            <DropdownMenuTrigger className="bg-gray-200 flex justify-between items-center gap-x-8 px-3 xs:px-5 py-1 xs:py-2 max-xs:text-sm rounded-md font-medium">
               <div>{filterValue}</div>
               <FaAngleDown />
             </DropdownMenuTrigger>
