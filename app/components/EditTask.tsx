@@ -1,17 +1,17 @@
 "use client";
 
 //react
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 //react icons
 import { FaAngleDown } from "react-icons/fa";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 //actions
-import { getTask, updateTask } from "../actions/tasks";
+import { updateTask } from "../actions/tasks";
 import { statusDropdown } from "@/config/config";
 
 //shadcn
+import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +42,9 @@ export default function EditTask({
     status: "Complete" | "Incomplete";
   }>({ title: taskTitle, status: checked ? "Complete" : "Incomplete" });
 
+  //shadcn toast
+  const { toast } = useToast()
+
   async function editTask() {
     await updateTask({
       id: id,
@@ -51,6 +54,10 @@ export default function EditTask({
     setChecked(taskValue.status === "Complete" ? true : false);
     setTaskTitle(taskValue.title);
     setOpen(false);
+    toast({
+      title: "Task updated",
+      description: "Task values succesfully updated!",
+    })
   }
 
   return (

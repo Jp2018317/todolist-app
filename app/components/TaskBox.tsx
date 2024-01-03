@@ -17,6 +17,7 @@ import { deleteTask, updateTask } from "../actions/tasks";
 import EditTask from "./EditTask";
 
 //shadcn
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,8 +53,15 @@ export default function TaskBox({
   //Task title
   const [taskTitle, setTaskTitle] = useState(title);
 
+  //shadcn
+  const { toast } = useToast();
+
   async function deleteSelectedTask() {
     await deleteTask(id);
+    toast({
+      title: "Task deleted",
+      description: `Task "${taskTitle}" deleted succesfully`,
+    })
   }
 
   async function updateStatus() {

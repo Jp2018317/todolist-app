@@ -15,6 +15,7 @@ import { listFilter, statusDropdown } from "@/config/config";
 import { Task } from "@/config/types";
 
 //shadcn
+import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,6 +54,9 @@ export default function AddTask() {
     status: "Complete" | "Incomplete";
   }>({ title: "", status: "Incomplete" });
 
+  //shadcn toast
+  const { toast } = useToast()
+
   async function newTask() {
     await addNewTask({
       title: taskValue.title,
@@ -62,6 +66,10 @@ export default function AddTask() {
     setTaskValue({ title: "", status: "Incomplete" });
     setOpen(false);
     fetchTasks();
+    toast({
+      title: "Task created",
+      description: `Task "${taskValue.title}" created succesfully`,
+    })
   }
 
   //Get Tasks depending on the status filter
