@@ -229,7 +229,15 @@ export default function AddTask() {
           </div>
         </>
       ) : (
-        <AuthView />
+        <>
+          {isLoading ? (
+          <div className="w-full flex justify-center py-10 bg-indigo-50 rounded-md mt-1.5">
+            <AiOutlineLoading3Quarters className="animate-spin text-indigo-500 w-8 h-8" />
+          </div>
+        ) : (
+          <AuthView />
+        )}
+        </>
       )}
     </>
   );
