@@ -18,6 +18,15 @@ import { listFilter, statusDropdown } from "@/config/config";
 //types
 import { Task } from "@/config/types";
 
+//shadcn
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import TasksView from "./TasksView";
 
 export default function AddTask() {
@@ -34,7 +43,6 @@ export default function AddTask() {
 
   //Add Task Modal
   const [showAddTask, setShowAddTask] = useState(false);
-  const [statusFilter, setStatusFilter] = useState(false);
 
   //Add Task form value
   const [taskValue, setTaskValue] = useState<{
@@ -86,28 +94,25 @@ export default function AddTask() {
           >
             Add Task
           </button>
-          <div className="relative">
-            <button
-              onClick={() => setOpenFilter(!openFilter)}
-              className="bg-gray-300 hover:bg-gray-400 active:bg-gray-200 flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium"
-            >
+          <DropdownMenu>
+            <DropdownMenuTrigger className="bg-gray-200 flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
               <div>{filterValue}</div>
               <FaAngleDown />
-            </button>
-            {openFilter && (
-              <div className="absolute w-full right-0 mt-2 bg-indigo-50 border border-indigo-200 flex flex-col justify-between items-center rounded-md font-medium">
-                {listFilter.map((filter) => (
-                  <button
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {listFilter.map((filter) => (
+                <>
+                  <DropdownMenuItem
                     key={filter}
                     onClick={() => getFilteredTasks(filter)}
-                    className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
                   >
                     {filter}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         {showAddTask ? (
           <>
@@ -139,37 +144,29 @@ export default function AddTask() {
                 <span className="text-sm text-gray-500 font-medium">
                   Status
                 </span>
-                <div className="relative">
-                  <button
-                    onClick={() => setStatusFilter(!statusFilter)}
-                    className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium"
-                  >
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="w-full bg-white flex justify-between items-center gap-x-8 px-5 py-2 rounded-md font-medium">
                     <div>{taskValue.status}</div>
                     <FaAngleDown />
-                  </button>
-                  {statusFilter && (
-                    <div className="absolute w-full right-0 bg-indigo-50 border border-indigo-200 flex flex-col justify-between items-center rounded-sm font-medium">
-                      {statusDropdown.map((status) => (
-                        <button
-                          key={status}
-                          onClick={() => {
-                            setTaskValue({
-                              ...taskValue,
-                              status:
-                                status === "Complete"
-                                  ? "Complete"
-                                  : "Incomplete",
-                            });
-                            setStatusFilter(!statusFilter);
-                          }}
-                          className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
-                        >
-                          {status}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {statusDropdown.map((status) => (
+                      <DropdownMenuItem
+                        key={status}
+                        onClick={() => {
+                          setTaskValue({
+                            ...taskValue,
+                            status:
+                              status === "Complete" ? "Complete" : "Incomplete",
+                          });
+                        }}
+                        className="w-full hover:bg-indigo-100 active:bg-indigo-200 border-b border-indigo-200 text-left gap-x-2 px-4 py-1.5 font-medium"
+                      >
+                        {status}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div className="w-full flex gap-2">
                 <button
@@ -208,12 +205,12 @@ export default function AddTask() {
       ) : (
         <>
           {userLogged !== "" ? (
-              <TasksView
-                userLogged={userLogged}
-                filter={filterValue}
-                tasks={tasks}
-                setTasks={setTasks}
-              />
+            <TasksView
+              userLogged={userLogged}
+              filter={filterValue}
+              tasks={tasks}
+              setTasks={setTasks}
+            />
           ) : (
             <div className="w-full max-h-[512px] overflow-y-auto flex flex-col space-y-4 items-center justify-center bg-indigo-50 rounded-lg mt-1.5 p-6">
               <h2 className="w-full text-center font-semibold text-lg text-gray-600 my-2">
