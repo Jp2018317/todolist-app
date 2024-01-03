@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 //react icons
-import { IoClose } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
