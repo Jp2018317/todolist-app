@@ -17,6 +17,7 @@ import { deleteTask, updateTask } from "../actions/tasks";
 import EditTask from "./EditTask";
 
 //shadcn
+import { useToast } from "@/components/ui/use-toast";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,7 +36,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 
 export default function TaskBox({
   id,
@@ -44,16 +44,28 @@ export default function TaskBox({
   createdAt,
   updatedAt,
 }: Omit<Task, "author">) {
+  //checkbox
   const [checked, setChecked] = useState(status === "Complete" ? true : false);
 
-  //Delete & Update Modal
+  //Update Modal
   const [open, setOpen] = useState(false);
+  
+  //Task deleted
+  const [deleted, setDeleted] = useState(false);
+  
+  //Task title
+  const [taskTitle, setTaskTitle] = useState(title);
 
-  const router = useRouter();
+  //shadcn
+  const { toast } = useToast();
 
   async function deleteSelectedTask() {
     await deleteTask(id);
-    router.refresh();
+    toast({
+      title: "Task deleted",
+      description: `Task "${taskTitle}" deleted succesfully`,
+    })
+    setDeleted(true)
   }
 
   async function updateStatus() {
@@ -65,11 +77,12 @@ export default function TaskBox({
   }
 
   return (
-    <div className="w-full p-3 flex items-center justify-between gap-4 bg-white rounded-md">
+    <div className={`w-full p-3 flex items-center justify-between gap-4 bg-white rounded-md ${ deleted && 'line-through text-gray-400'}`}>
       <div className="w-full flex items-center gap-3">
         <input
           onChangeCapture={() => updateStatus()}
           type="checkbox"
+          disabled={deleted}
           checked={checked}
           onChange={() => setChecked(!checked)}
           className="sm:w-6 w-4 sm:h-6 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500"
@@ -77,10 +90,10 @@ export default function TaskBox({
         <div className="flex flex-col justify-center">
           <span
             className={`font-medium max-sm:text-sm ${
-              checked ? "line-through text-gray-400" : "text-gray-700"
+              checked || deleted ? "line-through text-gray-400" : "text-gray-700"
             }`}
           >
-            {title}
+            {taskTitle}
           </span>
           <span className="text-xs max-sm:text-[10px] text-gray-500">
             Created: {createdAt} {updatedAt && `| Updated: ${updatedAt}`}
@@ -89,7 +102,7 @@ export default function TaskBox({
       </div>
       <div className="flex max-xs:flex-col justify-center items-center gap-3">
         <AlertDialog>
-          <AlertDialogTrigger className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500">
+          <AlertDialogTrigger disabled={deleted} className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500 disabled:text-gray-400">
             <FaTrash />
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -112,7 +125,7 @@ export default function TaskBox({
           </AlertDialogContent>
         </AlertDialog>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-red-500">
+          <DialogTrigger disabled={deleted} className="bg-gray-200 p-2 rounded-md text-gray-700 hover:text-indigo-500 disabled:text-gray-400">
             <MdModeEdit />
           </DialogTrigger>
           <DialogContent className="bg-indigo-50">
@@ -121,7 +134,7 @@ export default function TaskBox({
                 Edit Task
               </DialogTitle>
             </DialogHeader>
-            <EditTask id={id} setOpen={setOpen} />
+            <EditTask id={id} setOpen={setOpen} checked={checked} setChecked={setChecked} taskTitle={taskTitle} setTaskTitle={setTaskTitle}/>
           </DialogContent>
         </Dialog>
       </div>
